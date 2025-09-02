@@ -36,7 +36,7 @@ public class PaymentController {
             }
 
             Payment payment = paymentService.initiatePayment(currentUser, amount);
-            return ResponseEntity.ok(Map.of("message", "OTP sent to your email", "paymentId", payment.getId()));
+            return ResponseEntity.ok(Map.of("message", "OTP sent to your email", "paymentId", payment.getId(), "otp", payment.getOtp()));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Failed to initiate payment");
         }
