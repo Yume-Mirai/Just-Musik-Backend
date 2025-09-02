@@ -13,7 +13,7 @@ public class EmailService {
     @Value("${resend.api.key}")
     private String resendApiKey;
 
-    @Value("${resend.from.email:noreply@yourdomain.com}")
+    @Value("${resend.from.email}")
     private String fromEmail;
 
     public void sendOtpEmail(String toEmail, String otp) {
