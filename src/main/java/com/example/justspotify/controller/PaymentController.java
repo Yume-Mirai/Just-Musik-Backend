@@ -36,9 +36,16 @@ public class PaymentController {
             }
 
             Payment payment = paymentService.initiatePayment(currentUser, amount);
-            return ResponseEntity.ok(Map.of("message", "OTP sent to your email", "paymentId", payment.getId(), "otp", payment.getOtp()));
+            return ResponseEntity.ok(Map.of(
+                    "message", "OTP sent to your email",
+                    "paymentId", payment.getId(),
+                    "otp", payment.getOtp()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Failed to initiate payment");
+            e.printStackTrace(); // ← ini akan muncul di log Railway
+            return ResponseEntity.internalServerError()
+                    .body("Payment initiation failed: " + e.getMessage());
         }
     }
 
