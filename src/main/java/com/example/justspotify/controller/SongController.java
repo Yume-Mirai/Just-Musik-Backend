@@ -103,20 +103,8 @@ public class SongController {
     }
 
     @GetMapping("/{id}/download")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> downloadSong(@PathVariable Long id) {
         try {
-            User currentUser = getCurrentUser();
-
-            // Check if user is admin or has paid
-            boolean isAdmin = currentUser.getRoles().stream()
-                    .anyMatch(role -> role.getName().equals(ERole.ROLE_ADMIN));
-            boolean isPaid = paymentService.isUserPaid(currentUser);
-
-            if (!isAdmin && !isPaid) {
-                return ResponseEntity.status(403).body("Access denied. Please make a payment to download songs.");
-            }
-
             String downloadUrl = songService.getSongStreamUrl(id);
             return ResponseEntity.ok(Map.of("downloadUrl", downloadUrl));
         } catch (Exception e) {
