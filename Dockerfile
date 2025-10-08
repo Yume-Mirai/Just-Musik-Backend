@@ -28,8 +28,8 @@ WORKDIR /app
 # Copy hasil build dari stage sebelumnya
 COPY --from=build /app/target/justspotify-0.0.1-SNAPSHOT.jar justspotify.jar
 
-# Expose port Spring Boot
-EXPOSE 8080
+# Expose port Spring Boot (menggunakan environment variable PORT)
+EXPOSE ${PORT:-8080}
 
-# Jalankan aplikasi dengan JVM memory limit
-ENTRYPOINT ["java","-Xmx512m","-jar","justspotify.jar"]
+# Jalankan aplikasi dengan JVM memory limit dan PORT environment variable
+ENTRYPOINT ["sh", "-c", "java -Xmx512m -Dserver.port=${PORT:-8080} -jar justspotify.jar"]
